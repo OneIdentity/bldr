@@ -25,6 +25,7 @@ python = "^3.6"
 docker = "^4.4.4"
 dockerpty = "^0.4.1"
 importlib-metadata = "^3.7.3"
+importlib-resources = "^5.1.2"
 
 [tool.poetry.dev-dependencies]
 autopep8 = "^1.5.6"
