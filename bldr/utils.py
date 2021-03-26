@@ -2,6 +2,10 @@ import os
 import pwd
 from pathlib import Path
 from pkg_resources import resource_filename
+try:
+    from importlib import metadata
+except ImportError:
+    import importlib_metadata as metadata
 
 
 class BLDRError(Exception):
@@ -49,3 +53,7 @@ def get_config_file_paths():
     ]
 
     return config_file_paths
+
+
+def get_version():
+    return metadata.version("bldr")

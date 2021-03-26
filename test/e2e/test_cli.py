@@ -2,7 +2,7 @@ from pathlib import Path
 
 from pytest_console_scripts import ScriptRunner
 
-from bldr.version import get_version
+from bldr.utils import get_version
 from ..testutil import skip_if_global_config
 
 
