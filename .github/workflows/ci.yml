@@ -15,8 +15,8 @@ jobs:
     - name: Bootstrap environment
       run: |
         sudo apt update
-        sudo apt install python3-venv make
-        python -m pip install --upgrade pip
+        sudo apt install make
+        python -m pip install poetry
         make dev
     - name: Lint
       run: |
@@ -38,8 +38,8 @@ jobs:
     - name: Bootstrap environment
       run: |
         sudo apt update
-        sudo apt install python3-venv make
-        python -m pip install --upgrade pip
+        sudo apt install make
+        python -m pip install poetry
     - name: Test
       run: |
         make DOCKER_IMAGE=${{ matrix.docker-image }} check-docker-image

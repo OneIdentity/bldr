@@ -1,5 +1,7 @@
 
 VIRTUALENV ?= .venv
+# this will make poetry automatically create .venv
+export POETRY_VIRTUALENVS_IN_PROJECT = true
 PYCODESTYLE ?= $(VIRTUALENV)/bin/python3 -m pycodestyle
 AUTOPEP8 ?= $(VIRTUALENV)/bin/python3 -m autopep8
 FLAKE8 ?= $(VIRTUALENV)/bin/python3 -m flake8
@@ -41,27 +43,25 @@ check-docker-image: dev
 quick-check:
 	. $(VIRTUALENV)/bin/activate && pytest --docker-image=ubuntu:bionic
 
-# Update requirements files for setup.py
+# Update requirements
 .PHONY: update-requirements
 update-requirements: $(VIRTUALENV)/bin/python3
-	$(VIRTUALENV)/bin/pip3 install --upgrade pip-tools
-	$(VIRTUALENV)/bin/pip-compile --no-emit-trusted-host --no-emit-index-url --upgrade --output-file requirements.txt requirements.in
-	$(VIRTUALENV)/bin/pip-compile --no-emit-trusted-host --no-emit-index-url --upgrade --output-file requirements-dev.txt requirements-dev.in
+	poetry self update
+	poetry update
 
-# Create a virtualenv in .venv or the directory given in the following form: 'make VIRTUALENV=.venv2 install'
+# Create a virtualenv in .venv
 $(VIRTUALENV)/bin/python3:
-	python3 -m venv $(VIRTUALENV)
-	$(VIRTUALENV)/bin/pip install --upgrade pip
+	poetry install --no-dev
 
 # Install development dependencies (for testing) in virtualenv
 .PHONY: dev
 dev: $(VIRTUALENV)/bin/python3
-	$(VIRTUALENV)/bin/pip3 install -e '.[dev]'
+	poetry install
 
 # Clean directory and delete virtualenv
 .PHONY: clean
 clean:
-	$(VIRTUALENV)/bin/python3 setup.py clean --all
+	rm -rf dist/
 	rm -rf $(VIRTUALENV)
 
 .PHONY: get-version
