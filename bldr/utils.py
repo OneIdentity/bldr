@@ -1,7 +1,10 @@
 import os
 import pwd
 from pathlib import Path
-from pkg_resources import resource_filename
+try:
+    from importlib import metadata
+except ImportError:
+    import importlib_metadata as metadata  # type: ignore
 
 
 class BLDRError(Exception):
@@ -17,10 +20,6 @@ class BLDRSetupFailed(BLDRError):
     def __init__(self, msg: str, exitcode: int = 1) -> None:
         msg = 'Setting up BLDR failed: {}'.format(msg)
         super().__init__(msg, exitcode)
-
-
-def get_resource(path: str) -> Path:
-    return Path(resource_filename('bldr', str(Path('data', path))))
 
 
 def escape_docker_image_tag(tag: str) -> str:
@@ -49,3 +48,7 @@ def get_config_file_paths():
     ]
 
     return config_file_paths
+
+
+def get_version():
+    return metadata.version("bldr")

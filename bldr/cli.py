@@ -6,10 +6,8 @@ import json
 from pathlib import Path
 from textwrap import dedent
 from typing import List, Tuple
-
 from .bldr import BLDR
-from .version import get_version
-from .utils import BLDRError, escape_docker_image_tag, get_config_file_paths
+from .utils import BLDRError, escape_docker_image_tag, get_config_file_paths, get_version
 from .config import ArgumentParser, JSONConfigLoader, ConfigLoader, SubParsers
 
 
