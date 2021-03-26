@@ -66,8 +66,8 @@ clean:
 
 .PHONY: get-version
 get-version:
-	cat bldr/VERSION
+	poetry version -s
 
 .PHONY: bump-version
 bump-version:
-	./bump_version.py
+	poetry version patch
