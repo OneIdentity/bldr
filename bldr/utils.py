@@ -4,7 +4,7 @@ from pathlib import Path
 try:
     from importlib import metadata
 except ImportError:
-    import importlib_metadata as metadata
+    import importlib_metadata as metadata  # type: ignore
 
 
 class BLDRError(Exception):

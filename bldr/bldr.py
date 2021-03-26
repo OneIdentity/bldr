@@ -11,7 +11,7 @@ from tempfile import TemporaryDirectory
 try:
     from importlib import resources
 except ImportError:
-    import importlib_resources as resources
+    import importlib_resources as resources  # type: ignore
 
 from .docker_utils import DockerImageBuilder, DockerImage, DockerContainer
 from .utils import BLDRError, BLDRSetupFailed, escape_docker_image_tag
@@ -108,7 +108,7 @@ class BLDR:
 
         with TemporaryDirectory(prefix="bldr_docker_dir_") as tmp_dir:
             docker_files_dir = Path(tmp_dir).joinpath('docker_files')
-            with resources.path("bldr", "data") as data_path:
+            with resources.path("bldr", "data") as data_path:  # type: ignore
                 shutil.copytree(str(data_path), str(docker_files_dir))
             if control_file is None:
                 docker_files_dir.joinpath('control').write_text('')
