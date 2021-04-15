@@ -32,7 +32,7 @@ jobs:
     - name: Read version
       run: "echo bldr_version=$(cat bldr/VERSION) | tee --append $GITHUB_ENV"
     - name: Tag
-      env:
-        GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        .release-test-venv/bin/python3 .github/workflows/tag.py ${{ env.bldr_version }}
+      uses: negz/create-tag@v1
+      with:
+        version: "v${{ env.bldr_version }}"
+        token: ${{ secrets.GITHUB_TOKEN }}
