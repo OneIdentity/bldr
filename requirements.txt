@@ -21,7 +21,7 @@ six==1.15.0
     #   docker
     #   dockerpty
     #   websocket-client
-urllib3==1.26.4
+urllib3==1.26.5
     # via requests
 websocket-client==0.58.0
     # via docker
