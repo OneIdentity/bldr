@@ -4,11 +4,11 @@
 #
 #    pip-compile --no-emit-index-url --no-emit-trusted-host --output-file=requirements.txt requirements.in
 #
-certifi==2020.12.5
+certifi==2021.5.30
     # via requests
 chardet==4.0.0
     # via requests
-docker==4.4.4
+docker==5.0.0
     # via -r requirements.in
 dockerpty==0.4.1
     # via -r requirements.in
@@ -16,12 +16,9 @@ idna==2.10
     # via requests
 requests==2.25.1
     # via docker
-six==1.15.0
-    # via
-    #   docker
-    #   dockerpty
-    #   websocket-client
-urllib3==1.26.4
+six==1.16.0
+    # via dockerpty
+urllib3==1.26.5
     # via requests
-websocket-client==0.58.0
+websocket-client==1.0.1
     # via docker
