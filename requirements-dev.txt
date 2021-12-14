@@ -52,5 +52,9 @@ toml==0.10.2
     #   mypy
     #   pytest
     #   pytest-cov
+types-requests==2.26.1
+    # via -r requirements-dev.in
+types-setuptools==57.4.4
+    # via -r requirements-dev.in
 typing-extensions==4.0.1
     # via mypy
