@@ -3,5 +3,5 @@ flake8
 mypy
 pycodestyle
 pytest
-pytest-cov
+pytest-cov==2.12.1  # python 3.6 compatibility
 pytest-console-scripts
