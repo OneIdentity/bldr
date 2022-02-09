@@ -1,0 +1,11 @@
+Source: quilt-no-patch
+Maintainer: Test Maintainer <test.maintainer@example.com>
+Section: misc
+Priority: optional
+Standards-Version: 3.9.2
+Build-Depends: debhelper (>= 9)
+
+Package: quilt-no-patch
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: a 3.0 (quilt) format package without actual patches
