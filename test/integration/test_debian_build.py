@@ -1,5 +1,6 @@
 import pytest
 import re
+import subprocess
 from pathlib import Path
 from typing import List
 
@@ -116,3 +117,20 @@ def test_debian_build_with_hooks(local_repo_dir: Path, asset_dir: Path, docker_f
     assert local_repo_dir.joinpath('pre-init.called').exists(), "pre-init hook should be called"
     assert local_repo_dir.joinpath('pre-install-deps.called').exists(), "pre-install-deps hook should be called"
     assert local_repo_dir.joinpath('post-install-deps.called').exists(), "post-install-deps hook should be called"
+
+
+def test_deb_build_options(local_repo_dir: Path, asset_dir: Path, docker_from: str):
+    deb_build_options = {'bldr_foo1', 'bldr_bar2=x'}
+    bldr = BLDR(
+        local_repo_dir=local_repo_dir,
+        source_dir=asset_dir,
+        docker_from=docker_from,
+        deb_build_options=' '.join(deb_build_options),
+    )
+    pkg = 'embed-build-opts'
+    bldr.build(asset_dir.joinpath(pkg))
+
+    content = subprocess.check_output('dpkg-deb --fsys-tarfile {} | tar -Oxf- ./usr/share/doc/{}/deb_build_options.txt'.format(
+        list(local_repo_dir.glob('**/' + pkg + '*.deb'))[0], pkg), shell=True, universal_newlines=True)
+
+    assert deb_build_options.issubset(set(content.split())), "The set of build options should not shrink."
