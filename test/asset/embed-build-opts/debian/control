@@ -1,0 +1,10 @@
+Source: embed-build-opts
+Maintainer: Test Maintainer <test.maintainer@example.com>
+Section: misc
+Priority: optional
+Standards-Version: 3.9.2
+Build-Depends: debhelper (>= 9)
+
+Package: embed-build-opts
+Architecture: all
+Description: dummy package for testing DEB_BUILD_OPTIONS passthrough

@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import List
 
 from bldr.bldr import BLDR, BLDRError
+from ..testutil import extract_deb
 
 
 def get_local_deb_files(local_repo_dir: Path, package_prefix: str = '') -> List[str]:
@@ -116,3 +117,24 @@ def test_debian_build_with_hooks(local_repo_dir: Path, asset_dir: Path, docker_f
     assert local_repo_dir.joinpath('pre-init.called').exists(), "pre-init hook should be called"
     assert local_repo_dir.joinpath('pre-install-deps.called').exists(), "pre-install-deps hook should be called"
     assert local_repo_dir.joinpath('post-install-deps.called').exists(), "post-install-deps hook should be called"
+
+
+def test_deb_build_options(local_repo_dir: Path, asset_dir: Path, docker_from: str, tmp_path: Path):
+    deb_build_options = {'bldr_foo1', 'bldr_bar2=x'}
+    bldr = BLDR(
+        local_repo_dir=local_repo_dir,
+        source_dir=asset_dir,
+        docker_from=docker_from,
+        deb_build_options=' '.join(deb_build_options),
+    )
+    pkg = 'embed-build-opts'
+    bldr.build(asset_dir.joinpath(pkg))
+
+    deb_file = list(local_repo_dir.glob('**/' + pkg + '*.deb'))[0]
+
+    extract_dir = tmp_path.joinpath('extracted')
+    extract_dir.mkdir()
+    extract_deb(deb_file, extract_dir)
+
+    content = extract_dir.joinpath('usr', 'share', 'doc', pkg, 'deb_build_options.txt').read_text()
+    assert deb_build_options.issubset(set(content.split())), "The set of build options should not shrink."
