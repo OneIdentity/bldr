@@ -25,7 +25,6 @@ def quilt_project_path(tmp_path: Path, asset_dir: Path, git_env: Mapping[str, st
     subprocess.check_call(['git', 'commit', '--no-verify', '--message', 'Imported debian'], cwd=quilt_project_dir, env=git_env)
 
     subprocess.check_call(['git', 'checkout', '-b', 'master'], cwd=quilt_project_dir)
-    subprocess.check_call(['git', 'reset', '--hard', 'ubuntu'], cwd=quilt_project_dir)
 
     return quilt_project_dir
 
