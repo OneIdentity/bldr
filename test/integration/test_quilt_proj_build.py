@@ -14,21 +14,16 @@ def quilt_project_path(git_project_name: str, git_import: Path,
                        asset_dir: Path, git_env: Mapping[str, str]) -> Path:
     import_from = asset_dir.joinpath(git_project_name)
 
-    subprocess.check_call(['git', 'tag', 'upstream-older', 'upstream'], cwd=git_import)
-    subprocess.check_call(['git', 'tag', 'debian-older', 'ubuntu'], cwd=git_import)
-
     subprocess.check_call(['git', 'checkout', 'upstream'], cwd=git_import)
     copytree(import_from.joinpath('upstream-newer'), git_import, exist_ok=True)
     subprocess.check_call(['git', 'add', '--all'], cwd=git_import)
     subprocess.check_call(['git', 'commit', '--no-verify', '--message', 'Imported newer upstream'], cwd=git_import, env=git_env)
-    subprocess.check_call(['git', 'tag', 'upstream-newer'], cwd=git_import)
 
     subprocess.check_call(['git', 'checkout', 'ubuntu'], cwd=git_import)
-    subprocess.check_call(['git', 'merge', 'upstream-newer', '--no-commit'], cwd=git_import, env=git_env)
+    subprocess.check_call(['git', 'merge', 'upstream', '--no-commit'], cwd=git_import, env=git_env)
     copytree(import_from.joinpath('debian-newer'), git_import, exist_ok=True)
     subprocess.check_call(['git', 'add', '--all'], cwd=git_import)
     subprocess.check_call(['git', 'commit', '--no-verify', '--message', 'Imported debian newer version'], cwd=git_import, env=git_env)
-    subprocess.check_call(['git', 'tag', 'debian-newer'], cwd=git_import)
 
     subprocess.check_call(['git', 'checkout', 'master'], cwd=git_import)
     subprocess.check_call(['git', 'reset', '--hard', 'ubuntu'], cwd=git_import)
@@ -61,7 +56,7 @@ def do_build(local_repo_dir: Path, quilt_project_path: Path, docker_from: str, t
 
 @pytest.mark.parametrize('git_project_name', ['test-quilt-proj'], indirect=True)
 def test_quilt_project_build(git_project_name: str, local_repo_dir: Path, quilt_project_path: Path, docker_from: str, tmp_path: Path):
-    subprocess.check_call(['git', 'checkout', 'debian-older'], cwd=quilt_project_path)
+    subprocess.check_call(['git', 'checkout', 'ubuntu^'], cwd=quilt_project_path)
     expected_output = (
         "So I am a little script from upstream\n"
         "A little bit buggy though.\n"
@@ -70,7 +65,7 @@ def test_quilt_project_build(git_project_name: str, local_repo_dir: Path, quilt_
     debian_older_local_repo_dir = local_repo_dir.joinpath('debian-older')
     do_build(debian_older_local_repo_dir, quilt_project_path, docker_from, tmp_path, expected_output)
 
-    subprocess.check_call(['git', 'checkout', 'debian-newer'], cwd=quilt_project_path)
+    subprocess.check_call(['git', 'checkout', 'ubuntu'], cwd=quilt_project_path)
     expected_output = (
         "So I am a newer little script from upstream\n"
         "A little bit buggy though.\n"
