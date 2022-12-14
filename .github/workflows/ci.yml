@@ -5,7 +5,7 @@ on: [push, pull_request]
 jobs:
   lint:
     name: Coding style and linting checks
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python
@@ -24,7 +24,7 @@ jobs:
 
   test:
     name: Test with docker image ${{ matrix.docker-image }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     strategy:
       matrix:
         docker-image: ['ubuntu:xenial', 'ubuntu:bionic', 'ubuntu:focal', 'debian:bullseye']
