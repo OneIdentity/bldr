@@ -58,11 +58,11 @@ tomli==1.2.3
     #   pytest
 typed-ast==1.5.4
     # via mypy
-types-requests==2.28.11.2
+types-requests==2.28.11.5
     # via -r requirements-dev.in
-types-setuptools==65.5.0.2
+types-setuptools==65.6.0.2
     # via -r requirements-dev.in
-types-urllib3==1.26.25.1
+types-urllib3==1.26.25.4
     # via types-requests
 typing-extensions==4.1.1
     # via
