@@ -144,6 +144,7 @@ class BLDR:
             env_vars['DEB_BUILD_OPTIONS'] = self._deb_build_options
         env_vars['BLDR_SNAPSHOT'] = '1' if self._snapshot else ''
         env_vars['TERM'] = os.environ.get('TERM', 'xterm-256color')
+        env_vars['USER'] = self._nonpriv_user_name
 
         for env_key, env_value in self._container_env.items():
             env_vars[env_key] = env_value
