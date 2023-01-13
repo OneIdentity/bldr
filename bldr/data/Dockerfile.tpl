@@ -9,6 +9,13 @@ ENV LC_ALL C.UTF-8
 
 ADD files /
 
+# creating a fake local-apt repository, it is going to be hidden by
+# a bind mount, when a conatainer is running
+RUN echo "Creating local apt repo, so that the supplied /etc/apt/sources.list works in this context too" \
+    && mkdir /local-apt \
+    && touch /local-apt/Packages \
+    && touch /local-apt/Sources
+
 ADD hooks/pre-init /hooks/pre-init
 RUN /hooks/pre-init
 
