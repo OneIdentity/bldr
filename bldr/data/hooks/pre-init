@@ -1,1 +1,24 @@
 #!/bin/bash
+
+perform_unminimization() {
+    local unminimize_cmd="$(command -v unminimize)"
+
+    if [[ "${unminimize_cmd}" != "" ]]; then
+        echo
+        cat <<"END"
+Performing an image unminimization, because we experienced that more and more
+packages have tests depending on data which is not present on a minimized
+image.
+
+If this unminimization bothers you, please remove the
+'perform_unminimization' function from the 'pre-init' hook.
+END
+        echo
+
+        yes | "${unminimize_cmd}" || exit 1
+
+    fi
+}
+
+
+perform_unminimization
