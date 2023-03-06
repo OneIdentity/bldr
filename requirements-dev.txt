@@ -4,7 +4,7 @@
 #
 #    pip-compile --no-emit-index-url --no-emit-trusted-host --output-file=requirements-dev.txt requirements-dev.in
 #
-attrs==22.1.0
+attrs==22.2.0
     # via pytest
 autopep8==2.0.0
     # via -r requirements-dev.in
@@ -23,7 +23,7 @@ mccabe==0.7.0
     # via flake8
 mypy==0.971
     # via -r requirements-dev.in
-mypy-extensions==0.4.3
+mypy-extensions==1.0.0
     # via mypy
 packaging==21.3
     # via pytest
@@ -58,11 +58,11 @@ tomli==1.2.3
     #   pytest
 typed-ast==1.5.4
     # via mypy
-types-requests==2.28.11.5
+types-requests==2.28.11.15
     # via -r requirements-dev.in
-types-setuptools==65.6.0.2
+types-setuptools==67.5.0.0
     # via -r requirements-dev.in
-types-urllib3==1.26.25.4
+types-urllib3==1.26.25.8
     # via types-requests
 typing-extensions==4.1.1
     # via
