@@ -1,4 +1,4 @@
-autopep8==2.0.0
+autopep8
 flake8
 mypy
 pycodestyle
