@@ -227,7 +227,7 @@ class BLDR:
             if exitcode > 0:
                 raise BLDRError('BLDR reindex failed with exit code {exitcode}'.format(exitcode=exitcode), exitcode)
 
-    def shell(self, package_dir: Path, stdin: IO[str] = None) -> None:
+    def shell(self, package_dir: Path, stdin: Optional[IO[str]] = None) -> None:
         package_dir = package_dir.resolve()
 
         control_file = package_dir.joinpath('debian', 'control')
