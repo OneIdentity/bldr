@@ -5,6 +5,7 @@ PYCODESTYLE ?= $(VIRTUALENV)/bin/python3 -m pycodestyle
 AUTOPEP8 ?= $(VIRTUALENV)/bin/python3 -m autopep8
 FLAKE8 ?= $(VIRTUALENV)/bin/python3 -m flake8
 MYPY ?= $(VIRTUALENV)/bin/python3 -m mypy
+PIP_COMPILE ?= $(VIRTUALENV)/bin/pip-compile --no-emit-trusted-host --no-emit-index-url --upgrade --resolver=backtracking
 
 
 # Auto format by coding style check
@@ -46,8 +47,8 @@ quick-check:
 .PHONY: update-requirements
 update-requirements: $(VIRTUALENV)/bin/python3
 	$(VIRTUALENV)/bin/pip3 install --upgrade pip-tools
-	$(VIRTUALENV)/bin/pip-compile --no-emit-trusted-host --no-emit-index-url --upgrade --output-file requirements.txt requirements.in
-	$(VIRTUALENV)/bin/pip-compile --no-emit-trusted-host --no-emit-index-url --upgrade --output-file requirements-dev.txt requirements-dev.in
+	$(PIP_COMPILE) --output-file requirements.txt requirements.in
+	$(PIP_COMPILE) --output-file requirements-dev.txt requirements-dev.in
 
 # Create a virtualenv in .venv or the directory given in the following form: 'make VIRTUALENV=.venv2 install'
 $(VIRTUALENV)/bin/python3:
