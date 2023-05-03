@@ -1,5 +1,5 @@
 autopep8
-flake8
+flake8>=5  # for type annotation support and Python 3.8 compatibility in pyflakes 2.1.0+
 mypy
 pycodestyle
 pytest
