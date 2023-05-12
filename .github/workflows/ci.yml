@@ -7,9 +7,9 @@ jobs:
     name: Coding style and linting checks
     runs-on: ubuntu-20.04
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Set up Python
-      uses: actions/setup-python@v1
+      uses: actions/setup-python@v4
       with:
         python-version: '3.6'
     - run: pip3 install --upgrade pip
@@ -26,9 +26,9 @@ jobs:
         docker-image: ['ubuntu:xenial', 'ubuntu:bionic', 'ubuntu:focal', 'debian:bullseye']
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Set up Python
-      uses: actions/setup-python@v1
+      uses: actions/setup-python@v4
       with:
         python-version: '3.6'
     - run: pip3 install --upgrade pip
