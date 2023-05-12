@@ -13,10 +13,7 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: 3.6
-    - name: Install dependencies
-      run: |
-        python -m pip install -U pip wheel
-        sudo apt install python3-venv make
+    - run: pip3 install --upgrade pip wheel
     - name: Bump version
       run: "echo bldr_version=$(make bump-version) | tee --append $GITHUB_ENV"
     - name: Create pull request

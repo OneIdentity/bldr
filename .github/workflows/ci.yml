@@ -12,12 +12,8 @@ jobs:
       uses: actions/setup-python@v1
       with:
         python-version: '3.6'
-    - name: Bootstrap environment
-      run: |
-        sudo apt update
-        sudo apt install python3-venv make
-        python -m pip install --upgrade pip
-        make dev
+    - run: pip3 install --upgrade pip
+    - run: make dev
     - name: Lint
       run: |
         make cs lint
@@ -35,11 +31,7 @@ jobs:
       uses: actions/setup-python@v1
       with:
         python-version: '3.6'
-    - name: Bootstrap environment
-      run: |
-        sudo apt update
-        sudo apt install python3-venv make
-        python -m pip install --upgrade pip
+    - run: pip3 install --upgrade pip
     - name: Test
       run: |
         make DOCKER_IMAGE=${{ matrix.docker-image }} check-docker-image
