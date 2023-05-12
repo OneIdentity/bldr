@@ -10,7 +10,7 @@ jobs:
     - uses: actions/checkout@v3
     - uses: actions/setup-python@v4
       with:
-        python-version: '3.6'
+        python-version: 3.7
     - run: pip3 install --upgrade pip
     - run: make dev
     - run: make cs lint
@@ -26,6 +26,6 @@ jobs:
     - uses: actions/checkout@v3
     - uses: actions/setup-python@v4
       with:
-        python-version: '3.6'
+        python-version: 3.7
     - run: pip3 install --upgrade pip
     - run: make DOCKER_IMAGE=${{ matrix.docker-image }} check-docker-image
