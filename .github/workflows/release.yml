@@ -7,29 +7,21 @@ jobs:
     name: Release
     runs-on: ubuntu-20.04
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-    - name: Setup Python 3.6
-      uses: actions/setup-python@v4
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v4
       with:
         python-version: 3.6
     - run: pip3 install --upgrade pip wheel twine
-    - name: Make dists
-      run:
-        make release
-    - name: Release test
-      run:
-        make release-test
+    - run: make release
+    - run: make release-test
     - name: Publish a Python distribution to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
         user: __token__
         password: ${{ secrets.PYPI_API_TOKEN }}
         verbose: true
-    - name: Read version
-      run: "echo bldr_version=$(cat bldr/VERSION) | tee --append $GITHUB_ENV"
-    - name: Tag
-      uses: negz/create-tag@v1
+    - run: echo bldr_version=$(cat bldr/VERSION) | tee --append $GITHUB_ENV
+    - uses: negz/create-tag@v1
       with:
         version: "v${{ env.bldr_version }}"
         token: ${{ secrets.GITHUB_TOKEN }}

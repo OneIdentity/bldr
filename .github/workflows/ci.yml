@@ -8,15 +8,12 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v3
-    - name: Set up Python
-      uses: actions/setup-python@v4
+    - uses: actions/setup-python@v4
       with:
         python-version: '3.6'
     - run: pip3 install --upgrade pip
     - run: make dev
-    - name: Lint
-      run: |
-        make cs lint
+    - run: make cs lint
 
   test:
     name: Test with docker image ${{ matrix.docker-image }}
@@ -27,11 +24,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Set up Python
-      uses: actions/setup-python@v4
+    - uses: actions/setup-python@v4
       with:
         python-version: '3.6'
     - run: pip3 install --upgrade pip
-    - name: Test
-      run: |
-        make DOCKER_IMAGE=${{ matrix.docker-image }} check-docker-image
+    - run: make DOCKER_IMAGE=${{ matrix.docker-image }} check-docker-image
