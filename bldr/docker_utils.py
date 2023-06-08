@@ -15,7 +15,7 @@ from requests import RequestException
 from .utils import BLDRSetupFailed
 
 
-def _create_docker_client() -> DockerClient:
+def create_docker_client() -> DockerClient:
     try:
         return docker.from_env(version='auto', timeout=600)
     except DockerException as e:
@@ -34,13 +34,11 @@ def _check_docker_client(client: DockerClient) -> None:
 
 
 class DockerImageBuilder:
-    def __init__(self, client: Optional[DockerClient] = None, logger: Logger = logging.getLogger('DockerImageBuilder')) -> None:
-        self._logger: logging.Logger = logger
-
-        if client is None:
-            client = _create_docker_client()
+    def __init__(self, client: DockerClient, logger: Logger = logging.getLogger('DockerImageBuilder')) -> None:
         self._client: DockerClient = client
         _check_docker_client(self._client)
+
+        self._logger: logging.Logger = logger
 
     def build(self, path: Path, dockerfile: str, tag: str, buildargs: Dict, nocache: bool = False) -> 'DockerImage':
         stream = self._client.api.build(
@@ -62,16 +60,11 @@ class DockerImageBuilder:
 
 
 class DockerImage:
-    def __init__(self, image: Union[str, Image], client: Optional[DockerClient] = None, logger: Optional[Logger] = None) -> None:
-        if client is None:
-            client = _create_docker_client()
+    def __init__(self, client: DockerClient, image: Union[str, Image], logger: Logger = logging.getLogger('DockerImage')) -> None:
         self._client = client
         _check_docker_client(self._client)
 
         self._logger = logger
-        if self._logger is None:
-            self._logger = logging.getLogger('DockerImage')
-
         self._tag = image
 
     def create_container(self, **kwargs: Any) -> 'DockerContainer':
@@ -81,18 +74,16 @@ class DockerImage:
 class DockerContainer:
     def __init__(
         self,
+        client: DockerClient,
         image: Union[str, Image],
         command: Union[str, List],
         environment: Optional[Dict] = None,
         user: Optional[str] = None,
         volumes: Optional[Dict] = None,
-        client: Optional[DockerClient] = None,
         logger: Logger = logging.getLogger('DockerContainer'),
         tmp_on_tmpfs: bool = True,
     ) -> None:
 
-        if client is None:
-            client = _create_docker_client()
         self._client = client
         _check_docker_client(self._client)
 

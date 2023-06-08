@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Dict, IO, List, Union, Optional
 from tempfile import TemporaryDirectory
 
-from .docker_utils import DockerImageBuilder, DockerImage, DockerContainer
+from .docker_utils import create_docker_client, DockerImageBuilder, DockerImage, DockerContainer
 from .utils import BLDRError, BLDRSetupFailed, escape_docker_image_tag, get_resource
 
 
@@ -56,6 +56,7 @@ class BLDR:
         self._nonpriv_user_name = pwd.getpwuid(self._nonpriv_user_uid).pw_name
 
         self._tmp_on_tmpfs = not disable_tmpfs
+        self._docker_client = create_docker_client()
 
     @property
     def local_repo_dir(self) -> Path:
@@ -121,7 +122,7 @@ class BLDR:
                 shutil.rmtree(str(docker_hooks_dir))
                 shutil.copytree(str(self._hooks_dir), str(docker_hooks_dir))
 
-            image = DockerImageBuilder().build(
+            image = DockerImageBuilder(client=self._docker_client).build(
                 path=docker_files_dir,
                 dockerfile=dockerfile.name,
                 tag=tag,
@@ -198,8 +199,9 @@ class BLDR:
 
     @classmethod
     def selftest(cls) -> None:
+        client = create_docker_client()
         for ubuntu_release in ['xenial', 'bionic', 'focal']:
-            image = DockerImage(image='ubuntu:{}'.format(ubuntu_release))
+            image = DockerImage(client=client, image='ubuntu:{}'.format(ubuntu_release))
             assert image is not None, "DockerImage should be initialized without Exception"
 
             with image.create_container(command=['sleep', '3600']) as container:
