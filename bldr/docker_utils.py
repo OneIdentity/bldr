@@ -15,9 +15,12 @@ from requests import RequestException
 from .utils import BLDRSetupFailed
 
 
-def create_docker_client() -> DockerClient:
+DEFAULT_DOCKER_TIMEOUT = 600
+
+
+def create_docker_client(docker_timeout: int = DEFAULT_DOCKER_TIMEOUT) -> DockerClient:
     try:
-        return docker.from_env(version='auto', timeout=600)
+        return docker.from_env(version='auto', timeout=docker_timeout)
     except DockerException as e:
         raise BLDRSetupFailed(
             'Cannot create Docker client. Is Docker daemon running?\nAdditional info: {}'.format(e)

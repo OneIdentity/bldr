@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Dict, IO, List, Union, Optional
 from tempfile import TemporaryDirectory
 
-from .docker_utils import create_docker_client, DockerImageBuilder, DockerImage, DockerContainer
+from .docker_utils import create_docker_client, DockerImageBuilder, DockerImage, DockerContainer, DEFAULT_DOCKER_TIMEOUT
 from .utils import BLDRError, BLDRSetupFailed, escape_docker_image_tag, get_resource
 
 
@@ -30,6 +30,7 @@ class BLDR:
         container_env: Optional[Dict] = None,
         hooks_dir: Optional[Path] = None,
         disable_tmpfs: bool = False,
+        docker_timeout: int = DEFAULT_DOCKER_TIMEOUT,
     ) -> None:
 
         if ("\n" in docker_from or " " in docker_from):
@@ -56,7 +57,7 @@ class BLDR:
         self._nonpriv_user_name = pwd.getpwuid(self._nonpriv_user_uid).pw_name
 
         self._tmp_on_tmpfs = not disable_tmpfs
-        self._docker_client = create_docker_client()
+        self._docker_client = create_docker_client(docker_timeout)
 
     @property
     def local_repo_dir(self) -> Path:

@@ -8,6 +8,7 @@ from textwrap import dedent
 from typing import List, Tuple
 
 from .bldr import BLDR
+from .docker_utils import DEFAULT_DOCKER_TIMEOUT
 from .version import get_version
 from .utils import BLDRError, escape_docker_image_tag, get_config_file_paths
 from .config import ArgumentParser, JSONConfigLoader, ConfigLoader, SubParsers
@@ -114,6 +115,12 @@ class CLI:
             "--disable-tmpfs",
             help="Disable using tmpfs.",
             action="store_true",
+        )
+        parser.add_argument(
+            "--docker-timeout",
+            help="Timeout for docker API calls, in seconds. (default: %(default)s)",
+            type=int,
+            action='store', default=os.environ.get('BLDR_DOCKER_TIMEOUT', DEFAULT_DOCKER_TIMEOUT)
         )
 
     def _create_config_loader(self) -> ConfigLoader:
@@ -240,6 +247,7 @@ class CLI:
             container_env=dict(self.args.container_env),
             hooks_dir=self.args.hooks_dir,
             disable_tmpfs=self.args.disable_tmpfs,
+            docker_timeout=self.args.docker_timeout,
         )
         return bldr
 
