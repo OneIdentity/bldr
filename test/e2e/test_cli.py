@@ -87,7 +87,7 @@ def test_command_help(script_runner: ScriptRunner):
 def test_config_with_a_non_existent_file(script_runner: ScriptRunner, tmp_path: Path):
     config = tmp_path.joinpath('non-existent-config.json')
     ret = script_runner.run([
-        'bldr', '--config', str(config), 'build', 'ubuntu:bionic'
+        'bldr', '--config', str(config), 'build', 'ubuntu:focal'
     ])
     assert not ret.success
     assert "Unable to open configuration file: '{}'".format(config) in ret.stderr
@@ -98,7 +98,7 @@ def test_config_with_a_unreadable_file(script_runner: ScriptRunner, tmp_path: Pa
     config.touch()
     config.chmod(0)
     ret = script_runner.run([
-        'bldr', '--config', str(config), 'build', 'ubuntu:bionic'
+        'bldr', '--config', str(config), 'build', 'ubuntu:focal'
     ])
     assert not ret.success
     assert "Unable to open configuration file: '{}'".format(config) in ret.stderr
@@ -109,7 +109,7 @@ def test_config_with_a_non_json_file(script_runner: ScriptRunner, tmp_path: Path
     config.write_text('{"foo": ')
 
     ret = script_runner.run([
-        'bldr', '--config', str(config), 'build', 'ubuntu:bionic'
+        'bldr', '--config', str(config), 'build', 'ubuntu:focal'
     ])
     assert not ret.success
     assert "Unable to parse configuration file: 'Expecting value: line 1 column 9 (char 8)'" in ret.stderr

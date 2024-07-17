@@ -201,7 +201,7 @@ class BLDR:
     @classmethod
     def selftest(cls) -> None:
         client = create_docker_client()
-        for ubuntu_release in ['xenial', 'bionic', 'focal']:
+        for ubuntu_release in ['focal', 'jammy']:
             image = DockerImage(client=client, image='ubuntu:{}'.format(ubuntu_release))
             assert image is not None, "DockerImage should be initialized without Exception"
 

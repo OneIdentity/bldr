@@ -2,7 +2,7 @@ import pytest
 import shutil
 from pathlib import Path
 
-DEFAULT_DOCKER_IMAGES = ["ubuntu:xenial", "ubuntu:bionic", "ubuntu:focal", "debian:bullseye"]
+DEFAULT_DOCKER_IMAGES = ["ubuntu:focal", "ubuntu:jammy"]
 
 
 def pytest_addoption(parser):
