@@ -99,5 +99,5 @@ def test_argparse_inheritance(tmp_path: Path):
 def test_argparse_api_definitions():
     parser = argparse.ArgumentParser()
     assert hasattr(parser, "_actions"), "parser object should have '_actions' attribute"
-    assert type(parser._actions) == list, "parser's '_actions' attribute must be a list"
+    assert isinstance(parser._actions, list), "parser's '_actions' attribute must be a list"
     assert hasattr(argparse, "_StoreAction"), "argparse must have a '_StoreAction' class defined"
