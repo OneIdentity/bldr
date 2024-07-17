@@ -25,7 +25,12 @@ jobs:
     runs-on: ubuntu-20.04
     strategy:
       matrix:
-        docker-image: ['ubuntu:focal', 'debian:bullseye']
+        docker-image:
+        - ubuntu:focal
+        - ubuntu:jammy
+        - ubuntu:noble
+        - debian:bullseye
+        - debian:bookworm
 
     steps:
     - uses: actions/checkout@v3
