@@ -1,3 +1,4 @@
+import importlib_resources
 import logging
 import os
 import pwd
@@ -10,7 +11,7 @@ from typing import Dict, IO, List, Union, Optional
 from tempfile import TemporaryDirectory
 
 from .docker_utils import create_docker_client, DockerImageBuilder, DockerImage, DockerContainer, DEFAULT_DOCKER_TIMEOUT
-from .utils import BLDRError, BLDRSetupFailed, escape_docker_image_tag, get_resource
+from .utils import BLDRError, BLDRSetupFailed, escape_docker_image_tag
 
 
 PRE_BUILD_HOOK = "/hooks/pre-build"
@@ -106,7 +107,10 @@ class BLDR:
 
         with TemporaryDirectory(prefix="bldr_docker_dir_") as tmp_dir:
             docker_files_dir = Path(tmp_dir).joinpath('docker_files')
-            shutil.copytree(str(get_resource('.')), str(docker_files_dir))
+            with importlib_resources.as_file(
+                    importlib_resources.files().joinpath('data')
+            ) as resource_dir:
+                shutil.copytree(resource_dir, docker_files_dir)
             if control_file is None:
                 docker_files_dir.joinpath('control').write_text('')
             else:

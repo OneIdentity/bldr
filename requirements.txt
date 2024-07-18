@@ -14,6 +14,8 @@ dockerpty==0.4.1
     # via -r requirements.in
 idna==3.7
     # via requests
+importlib-resources==6.4.0
+    # via -r requirements.in
 requests==2.32.3
     # via docker
 six==1.16.0
@@ -22,3 +24,5 @@ urllib3==2.2.2
     # via
     #   docker
     #   requests
+zipp==3.19.2
+    # via importlib-resources
