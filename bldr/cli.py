@@ -60,7 +60,7 @@ class CLI:
 
         parser.add_argument(
             "docker_from",
-            help="Specify the value which will be used for the FROM keyword when building the docker image. Example: 'ubuntu:bionic'",
+            help="Specify the value which will be used for the FROM keyword when building the docker image. Example: 'ubuntu:jammy'",
         )
         parser.add_argument(
             '-s', '--snapshot',

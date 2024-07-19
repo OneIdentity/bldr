@@ -15,7 +15,7 @@ def test_config_with_an_existent_file(tmp_path: Path):
     config = tmp_path.joinpath('config.json')
     with config.open('w') as config_file:
         json.dump({'container_env': ['foo=bar', 'bar=baz']}, config_file)
-    bldr = CLI(['bldr', '--config', str(config), 'build', 'ubuntu:bionic'])
+    bldr = CLI(['bldr', '--config', str(config), 'build', 'ubuntu:focal'])
     assert bldr.args.container_env == [('foo', 'bar'), ('bar', 'baz')]
 
 
@@ -23,9 +23,9 @@ def test_config_and_cmdline_arg_has_a_same_value_and_a_proper_type(tmp_path: Pat
     config = tmp_path.joinpath('config.json')
     with config.open('w') as config_file:
         json.dump({'hooks_dir': '/foo/hooks'}, config_file)
-    bldr = CLI(['bldr', '--config', str(config), 'build', 'ubuntu:bionic'])
+    bldr = CLI(['bldr', '--config', str(config), 'build', 'ubuntu:focal'])
     hooks_dir1 = bldr.args.hooks_dir
-    bldr = CLI(['bldr', 'build', 'ubuntu:bionic', '--hooks-dir', '/foo/hooks'])
+    bldr = CLI(['bldr', 'build', 'ubuntu:focal', '--hooks-dir', '/foo/hooks'])
     hooks_dir2 = bldr.args.hooks_dir
 
     assert hooks_dir1 == Path('/foo/hooks')
@@ -37,7 +37,7 @@ def test_config_override_with_cmdline_arg(tmp_path):
     with config.open('w') as config_file:
         json.dump({'hooks_dir': '/foo/hooks'}, config_file)
     bldr = CLI(
-        ['bldr', 'build', 'ubuntu:bionic', '--hooks-dir', '/override/hooks']
+        ['bldr', 'build', 'ubuntu:focal', '--hooks-dir', '/override/hooks']
     )
 
     assert bldr.args.hooks_dir == Path('/override/hooks')
@@ -80,7 +80,7 @@ def test_container_env(tmp_path: Path, config_data, arguments, expected):
     with config.open('w') as config_file:
         json.dump(config_data, config_file)
     base_arguments = [
-        'bldr', '--config', str(config), 'build', 'ubuntu:bionic',
+        'bldr', '--config', str(config), 'build', 'ubuntu:focal',
     ]
     bldr = CLI(base_arguments + arguments)
 

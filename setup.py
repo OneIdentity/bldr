@@ -38,7 +38,7 @@ setup(
     extras_require={
         'dev': Path('requirements-dev.txt').read_text(),
     },
-    python_requires=">=3.7",
+    python_requires=">=3.8",
     package_data={'bldr': [
         'VERSION',
     ] + get_package_data()},
@@ -50,10 +50,11 @@ setup(
         "Operating System :: POSIX :: Linux",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
         "Topic :: System :: Systems Administration",
         "Topic :: Utilities",
     ],

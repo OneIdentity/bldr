@@ -8,10 +8,9 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v3
-    - uses: actions/setup-python@v4
-      with:
-        python-version: 3.7
-    - run: pip3 install --upgrade pip wheel twine
+    - run: |
+        sudo apt-get install python3-venv make
+        pip3 install --upgrade pip wheel twine
     - run: make release
     - run: make release-test
     - name: Publish a Python distribution to PyPI

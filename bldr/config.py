@@ -78,7 +78,7 @@ class ArgumentParser(argparse.ArgumentParser):
 
         super().__init__(*args, **kwargs)
 
-    def parse_known_args(self, args: Optional[Sequence[str]] = None, namespace: Optional[argparse.Namespace] = None) -> Tuple[argparse.Namespace, List[str]]:
+    def parse_known_args(self, args: Optional[Sequence[str]] = None, namespace=None):
         if self.config_loader:
             self.set_defaults_from_config(args)
         return super().parse_known_args(args, namespace=None)

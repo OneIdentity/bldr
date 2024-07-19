@@ -41,7 +41,7 @@ check-docker-image: dev
 # Run tests on one selected docker image
 .PHONY: quick-check
 quick-check:
-	. $(VIRTUALENV)/bin/activate && pytest --docker-image=ubuntu:bionic
+	. $(VIRTUALENV)/bin/activate && pytest --docker-image=ubuntu:focal
 
 # Update requirements files for setup.py
 .PHONY: update-requirements
@@ -68,7 +68,7 @@ release:
 
 .PHONY: release-test
 release-test: release
-	. $(RELEASE_TEST_VENV)/bin/activate && pytest --docker-image=ubuntu:bionic
+	. $(RELEASE_TEST_VENV)/bin/activate && pytest --docker-image=ubuntu:focal
 
 # Install development dependencies (for testing) in virtualenv
 .PHONY: dev

@@ -14,10 +14,9 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v3
-    - uses: actions/setup-python@v4
-      with:
-        python-version: 3.7
-    - run: pip3 install --upgrade pip
+    - run: |
+        sudo apt-get install python3-venv make
+        pip3 install --upgrade pip
     - run: make dev
     - run: make cs lint
 
@@ -26,12 +25,16 @@ jobs:
     runs-on: ubuntu-20.04
     strategy:
       matrix:
-        docker-image: ['ubuntu:xenial', 'ubuntu:bionic', 'ubuntu:focal', 'debian:bullseye']
+        docker-image:
+        - ubuntu:focal
+        - ubuntu:jammy
+        - ubuntu:noble
+        - debian:bullseye
+        - debian:bookworm
 
     steps:
     - uses: actions/checkout@v3
-    - uses: actions/setup-python@v4
-      with:
-        python-version: 3.7
-    - run: pip3 install --upgrade pip
+    - run: |
+        sudo apt-get install python3-venv make
+        pip3 install --upgrade pip
     - run: make DOCKER_IMAGE=${{ matrix.docker-image }} check-docker-image
