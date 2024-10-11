@@ -3,6 +3,11 @@
 set -e
 echo "Preparing BLDR deb builder docker image"
 
+if getent passwd ubuntu; then
+    echo "Deleting ubuntu user"
+    userdel -r ubuntu
+fi
+
 echo "Adding non-privileged user ${NONPRIV_USER_NAME} with uid ${NONPRIV_USER_UID}"
 useradd -u ${NONPRIV_USER_UID} ${NONPRIV_USER_NAME} -m
 
