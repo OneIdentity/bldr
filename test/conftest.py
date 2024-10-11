@@ -2,7 +2,7 @@ import pytest
 import shutil
 from pathlib import Path
 
-DEFAULT_DOCKER_IMAGES = ["ubuntu:focal", "ubuntu:jammy"]
+DEFAULT_DOCKER_IMAGES = ["ubuntu:focal", "ubuntu:jammy", "ubuntu:noble"]
 
 
 def pytest_addoption(parser):
