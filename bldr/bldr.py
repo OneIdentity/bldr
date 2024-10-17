@@ -214,7 +214,7 @@ class BLDR:
 
                 assert container.exec(command=['false']) == 1, "return code should be returned"
 
-                cmd = 'useradd -u 1000 user && su user -c whoami'   # checking for possible SELinux issues
+                cmd = 'useradd -u 1001 user && su user -c whoami'   # checking for possible SELinux issues
                 assert container.exec_run(command=['bash', '-c', cmd]) == 'user\n', "'su user' should succeed"
 
                 cmd = 'echo "deb http://archive.ubuntu.com/ubuntu {} main universe" > /etc/apt/sources.list'.format(ubuntu_release)
