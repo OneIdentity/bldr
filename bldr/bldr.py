@@ -24,6 +24,7 @@ class BLDR:
         source_dir: Path,
         docker_from: str,
         deb_build_options: Optional[str] = None,
+        build_profiles: Optional[List[str]] = None,
         debug_shell: bool = False,
         snapshot: bool = False,
         nocache: bool = False,
@@ -43,6 +44,7 @@ class BLDR:
 
         self._debug_shell = debug_shell
         self._deb_build_options = deb_build_options
+        self._build_profiles = [] if build_profiles is None else build_profiles
         self._snapshot = snapshot
         self._nocache = nocache
 
@@ -148,6 +150,8 @@ class BLDR:
             env_vars['no_proxy'] = os.environ.get('no_proxy')
         if self._deb_build_options is not None:
             env_vars['DEB_BUILD_OPTIONS'] = self._deb_build_options
+        if self._build_profiles:
+            env_vars['DEB_BUILD_PROFILES'] = ' '.join(self._build_profiles)
         env_vars['BLDR_SNAPSHOT'] = '1' if self._snapshot else ''
         env_vars['TERM'] = os.environ.get('TERM', 'xterm-256color')
         env_vars['USER'] = self._nonpriv_user_name

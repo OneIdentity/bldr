@@ -84,6 +84,11 @@ class CLI:
             action='store', default=os.environ.get('DEB_BUILD_OPTIONS', None)
         )
         parser.add_argument(
+            '--build-profiles',
+            help="Profiles for the build as a comma-separated list (default: no specific profile).",
+            action='store'
+        )
+        parser.add_argument(
             '--local-repo-dir',
             help="The directory for the local apt repository. The value will be: "
                  "1. This argument, if given. "
@@ -241,6 +246,7 @@ class CLI:
             source_dir=Path().cwd().parent,
             docker_from=self.args.docker_from,
             deb_build_options=self.args.deb_build_options,
+            build_profiles=[] if self.args.build_profiles is None else self.args.build_profiles.split(','),
             debug_shell=self.args.shell,
             snapshot=self.args.snapshot,
             nocache=self.args.nocache,
