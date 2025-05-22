@@ -147,9 +147,11 @@ class DockerContainer:
         return self._client.api.inspect_container(self._container.id)['State'].get('ExitCode', 0)
 
     def __exit__(self, exc_type, exc_val, exc_tb) -> None:
+        force_remove = False
         try:
             self._container.kill()
-        except APIError:
-            pass
+        except APIError as error:
+            force_remove = True
+            self._logger.error(f"Failed to kill container; {error=}")
         finally:
-            self._container.remove()
+            self._container.remove(force=force_remove)
