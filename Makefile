@@ -61,7 +61,7 @@ venv: $(VIRTUALENV)/bin/python3
 .PHONY: release
 release:
 	make venv VIRTUALENV=$(RELEASE_TEST_VENV)
-	$(RELEASE_TEST_VENV)/bin/pip3 install wheel
+	$(RELEASE_TEST_VENV)/bin/pip3 install wheel setuptools
 	$(RELEASE_TEST_VENV)/bin/python3 setup.py sdist bdist_wheel
 	$(RELEASE_TEST_VENV)/bin/pip install dist/*.whl
 	$(RELEASE_TEST_VENV)/bin/pip3 install -r requirements-dev.txt
