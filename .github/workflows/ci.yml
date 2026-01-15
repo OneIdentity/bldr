@@ -26,10 +26,8 @@ jobs:
     strategy:
       matrix:
         docker-image:
-        - ubuntu:focal
         - ubuntu:jammy
         - ubuntu:noble
-        - debian:bullseye
         - debian:bookworm
 
     steps:
