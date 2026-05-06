@@ -1,0 +1,68 @@
+name: update requirements
+
+on: workflow_dispatch
+
+jobs:
+  update:
+    name: Update requirements
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    outputs:
+      sha: ${{ steps.push.outputs.sha }}
+      changed: ${{ steps.push.outputs.changed }}
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        ref: master
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+    - run: |
+        sudo apt-get install -y make
+        pip install --upgrade pip
+    - run: make update-requirements
+    - name: Commit and push to auto-update-requirements branch
+      id: push
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git add requirements.txt requirements-dev.txt
+        if git diff --cached --quiet; then
+          echo "No changes to commit"
+          echo "changed=false" >> "$GITHUB_OUTPUT"
+        else
+          make bump-version
+          git add bldr/VERSION
+          git commit --message="requirements*.txt: update requirements, bump version"
+          git push --force origin HEAD:auto-update-requirements
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+        fi
+
+  ci:
+    name: CI
+    needs: update
+    if: needs.update.outputs.changed == 'true'
+    uses: ./.github/workflows/ci.yml
+    with:
+      ref: ${{ needs.update.outputs.sha }}
+
+  merge:
+    name: Push to master
+    needs: [update, ci]
+    if: always() && needs.update.outputs.changed == 'true'
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        ref: ${{ needs.update.outputs.sha }}
+        fetch-depth: 0
+    - name: Push to master
+      if: needs.ci.result == 'success'
+      run: git push origin HEAD:master
+    - name: Delete auto-update-requirements branch
+      if: always()
+      run: git push origin --delete auto-update-requirements

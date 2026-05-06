@@ -4,16 +4,25 @@ on:
   push:
     branches:
     - master
+    - auto-update-requirements
   pull_request:
     branches:
     - master
+  workflow_call:
+    inputs:
+      ref:
+        required: false
+        type: string
+        default: ''
 
 jobs:
   lint:
     name: Coding style and linting checks
     runs-on: ubuntu-24.04
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
+      with:
+        ref: ${{ inputs.ref || github.sha }}
     - run: |
         sudo apt-get install python3-venv make
         pip3 install --upgrade pip
@@ -31,7 +40,9 @@ jobs:
         - debian:bookworm
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
+      with:
+        ref: ${{ inputs.ref || github.sha }}
     - run: |
         sudo apt-get install python3-venv make
         pip3 install --upgrade pip
